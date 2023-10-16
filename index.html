@@ -1,0 +1,161 @@
+ <html>
+ <head>
+    <title>To-Do List App</title>
+    <link rel="stylesheet" type="text/css" href="http://localhost:3000/style.css">
+
+</head>
+<script>
+ /*Under script we write client side javascript like the function which will 
+ get performed while interaction with the web page i.e, on click if i set a
+ instruction to send Hi then it will send hii, when i press send Todo button*/
+
+
+//4th step - now we need a function to delete data 
+ function deleteDone(id){
+   console.log("Done Delete");
+   console.log(id);
+
+//Delete the right todo from the list
+//you will need to give each too an id, and that should be enough to remove it
+        
+     var zodo = document.getElementById("mainArea");
+      var childElement = document.getElementById(id);
+      zodo.removeChild(childElement);
+
+}
+ function deleteTodo(id){
+    console.log(id);
+    fetch("http://localhost:3000/todos/" +id,{
+        method:"DELETE",
+     }).then(deleteDone(id))  ; // Call deleteDone after the fetch request is complete
+   }
+
+//3rd step - now we need a function to get data
+ function todosCallback(data){
+   // console.log(data);//rather than logigng we need to show data in a dailog box so
+    var parentElement = document.getElementById("mainArea");
+    //parentElement.innerHTML = JSON.stringify(data);
+    
+  for(var i =0;i<data.length;i++){
+    var childElement  =document.createElement("div");
+     //given id to childelement
+     childElement.id = data[i].id; /*imp for giivng id to div*/
+
+   // childElement.innerHTML = data[i].title;(we have to create 3 grandchild for this project) - so we don't need it.
+     var grandchildElement1 = document.createElement("Span");
+     grandchildElement1.innerHTML = data[i].title
+     grandchildElement1.classList.add("bold-title");
+     
+
+     var grandchildElement2 = document.createElement("Span");
+     grandchildElement2.innerHTML = data[i].description
+
+     var grandchildElement3 = document.createElement("button");
+     grandchildElement3.innerHTML = "Delete"
+     grandchildElement3.setAttribute("onclick","deleteTodo(" + data[i].id + ")")
+     grandchildElement3.className = "button"; // Add a class name for css
+
+
+
+     childElement.appendChild(grandchildElement1);
+     childElement.appendChild(grandchildElement2);
+     childElement.appendChild(grandchildElement3);
+    
+
+    parentElement.appendChild(childElement);
+    }
+ }
+ function getdataCallback(resp){
+    resp.json().then(todosCallback);//resp.json()" is like a magical spell 
+                                    //you can use to open each of these toy boxes and see what's inside
+ }
+ function getData(){
+    fetch("http://localhost:3000/todos",{
+        method:"GET"
+     }).then(getdataCallback)  
+   } 
+  getData();//after making the Function we are calling it.(Above we have made the get data function)
+
+ //parsed response Post callback ka part hai.
+ function parsedResponse(data){//here we get the data , what the backend returns us.
+    console.log(data);
+   /*We have copied whole down code from get method , so that we can see the input on screen without reloading the screen*/
+    var childElement  =document.createElement("div");
+    var parentElement = document.getElementById("mainArea");
+    var grandchildElement1 = document.createElement("Span");
+     grandchildElement1.innerHTML = data.title;
+     grandchildElement1.classList.add("bold-title");
+     
+
+     var grandchildElement2 = document.createElement("Span");
+     grandchildElement2.innerHTML = data.description;
+
+     var grandchildElement3 = document.createElement("button");
+     grandchildElement3.innerHTML = "Delete";
+     grandchildElement3.className = "button";
+     
+
+     childElement.appendChild(grandchildElement1);
+     childElement.appendChild(grandchildElement2);
+     childElement.appendChild(grandchildElement3);
+     
+
+
+    parentElement.appendChild(childElement);
+  
+
+        }
+ function callback(resp){
+          resp.json().then(parsedResponse);//we convert wthaerver we got into parsedresponse, the send it to Parsed Response
+      } 
+ function onPress(){
+  //2nd step - the given line of code will help to log the data in browser's Console
+  var title1 = document.getElementById("title").value;
+  var description1 = document.getElementById("description").value;
+
+
+  /* 1st step-A library which lets your browser talk to the backend */   
+    fetch("http://localhost:3000/todos",{
+        method:"POST",
+        body: JSON.stringify({
+            title: title1,
+            description: description1
+        }),
+        headers: {
+            "Content-Type": "application/json" //everytime you send a Post request to a server with a body it tells the server bout it.
+        }
+     }).then(callback).then(()=>{
+      var titleInput = document.getElementById("title");
+      var descriptionInput = document.getElementById("description");
+      titleInput.value = "";
+      descriptionInput.value = "";
+     })  
+   }
+
+
+</script>
+
+<body>
+      <div class = "container">
+       <div class = "todo-app">
+            <h2>To-Do List </h2>
+            <br>
+
+              <label for="title" style="font-weight: bold; font-family: 'Arial', sans-serif;">Todo Title</label>
+              <input type="text" id="title" placeholder="Add your Title"></input>
+               <br><br>
+
+               <label for="description" style="font-weight: bold; font-family: 'Arial', sans-serif;">Todo Description</label>
+               <input type="text" id="description" placeholder="Add your Description"></input>
+
+              
+               <button class="button"onclick="onPress()">Send ToDo</button>
+               <div id="mainArea">
+
+               <br><br>
+               </div>
+        </div>
+
+      </div>
+</body>
+</html>

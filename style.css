@@ -1,0 +1,81 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+
+.container{
+   width: 100%;
+   min-height: 100vh;
+   background: linear-gradient(135deg, #11998E , #38EF7D);
+   padding: 10px;
+
+
+}
+
+.todo-app{
+    width: 100%;
+    max-width: 540px;
+    background: #fff;
+    margin: 100px auto 20px;
+    padding: 40px 30px 70px;
+    border-radius: 10px;
+
+}
+
+.todo-app h2{
+    color: #002765;
+    display:flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+
+#mainArea div{
+    border: 3px solid #abcea1;
+    background-color: #e2eede;
+    border-radius: 6px;
+    padding: 5px;
+    display: grid;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+#title {
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    padding: 5px; 
+    width: 200px; 
+}
+#description {
+    font-family: 'Arial', sans-serif; 
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    padding: 5px; 
+    width: 200px; 
+}
+
+.button {
+    background-color: #4DC9FF; /* Button background color */
+    color:#fff; /* Text color */
+    border: none;
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px 20px; /* Adjust the padding to set the button size */
+    font-size: 16px; /* Adjust the font size */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.button:hover {
+    background-color:  #2FA6D6; /* Background color on hover */
+}
+.bold-title {
+    font-weight: bold;
+}
